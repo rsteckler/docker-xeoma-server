@@ -6,7 +6,7 @@ MAINTAINER Marcus Collier "dev@mjcollier.id.au"
 CMD ["/sbin/my_init"]
 
 # Install prerequisites
-RUN apt-get update; \
+RUN apt-get update && apt-get -y upgrade && \
 	apt-get install -y libasound2
 # Grab latest 64bit and install
 RUN curl -o /root/xeoma_linux64.tgz http://felenasoft.com/xeoma/downloads/xeoma_linux64.tgz && \
