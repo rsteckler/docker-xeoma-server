@@ -5,11 +5,22 @@ MAINTAINER Marcus Collier "dev@mjcollier.id.au"
 # Use baseimage-docker's init system.
 CMD ["/sbin/my_init"]
 
+ENV DEBIAN_FRONTEND noninteractive
+
+# Speed up APT
+RUN echo "force-unsafe-io" > /etc/dpkg/dpkg.cfg.d/02apt-speedup \
+  && echo "Acquire::http {No-Cache=True;};" > /etc/apt/apt.conf.d/no-cache
+
 # Install prerequisites
-RUN apt-get update && apt-get -y upgrade && \
-	apt-get install -y libasound2
+RUN set -x && \
+  apt-get update && apt-get -y upgrade && \
+	apt-get install -y libasound2 && \
+  # Clean up APT when done.
+  apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
 # Grab latest 64bit and install
-RUN curl -o /root/xeoma_linux64.tgz http://felenasoft.com/xeoma/downloads/xeoma_linux64.tgz && \
+RUN set -x && \
+  curl -o /root/xeoma_linux64.tgz http://felenasoft.com/xeoma/downloads/xeoma_linux64.tgz && \
 	tar -xvzf /root/xeoma_linux64.tgz -C /root && \
 	/root/xeoma.app -install -allmanual && \
 	rm /root/xeoma_linux64.tgz
@@ -23,9 +34,6 @@ ADD xeoma.sh /etc/service/xeoma/run
 RUN chmod +x /etc/service/xeoma/run
 
 VOLUME /usr/local/Xeoma
-
-# Clean up APT when done.
-RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Expose the port
 EXPOSE 8090
