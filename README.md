@@ -2,7 +2,7 @@ Run Xeoma with Docker
 ================
 
 ### Purpose
-Xeoma (Security Monitoring Software) developed by Felena Soft http://felenasoft.com/, running in a Docker.
+A docker container for running Xeoma server. Xeoma is video surveillance software developed by Felena Soft http://felenasoft.com/. It supports a wide range of security cameras, has low CPU overhead, and a very easy-to-use interface.
 
 ### EULA
 Make sure you read this - http://felenasoft.com/xeoma/en/eula/ as you are effectively agreeing to it by running this docker.
