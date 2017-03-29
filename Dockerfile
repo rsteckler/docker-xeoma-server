@@ -1,5 +1,5 @@
 # Use phusion/baseimage as base image.
-FROM phusion/baseimage:0.9.18
+FROM phusion/baseimage:0.9.19
 MAINTAINER Marcus Collier "dev@mjcollier.id.au"
 
 # Use baseimage-docker's init system.
