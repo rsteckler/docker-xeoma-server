@@ -13,7 +13,7 @@ RUN echo "force-unsafe-io" > /etc/dpkg/dpkg.cfg.d/02apt-speedup \
 
 # Install prerequisites
 RUN set -x && \
-  apt-get update && apt-get -y upgrade && \
+  apt-get update && \
 	apt-get install -y libasound2 && \
   # Clean up APT when done.
   apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
