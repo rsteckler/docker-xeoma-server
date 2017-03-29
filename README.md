@@ -45,7 +45,7 @@ Ensure you are using a volume before you install the license, otherwise if you n
  As long as you have your /usr/local/Xeoma mapped to a volume, then you can safely stop, remove and start up new containers.  Config/license is carried across between containers being recreated.
 
 ### Notes
-Due to how many security cameras work, this needs to be on the host network stack.  This probably can be changed to not be so insecure, but I haven't done it yet.
+Depending on how your security camera works, you might need to enable host networking with --net=host. If you are using IP cameras, you can run this in bridged networking mode, which is more secure.
 
 ### Support
 I don't work for FelenaSoft, I just own a license.  So if you find any bugs with the software that are related to the docker container, let me know and I'll investigate.  If you find bugs that are related to the actual software or cameras, etc then contact FelenaSoft.  This project is a personal pet project that FelenaSoft is aware of, but offer no support for it.  Don't hassle them if things don't work in relation to the container, etc.
