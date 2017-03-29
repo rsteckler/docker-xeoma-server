@@ -25,9 +25,6 @@ RUN set -x && \
 	/root/xeoma.app -install -allmanual && \
 	rm /root/xeoma_linux64.tgz
 
-# Set up the force first run
-RUN touch /root/firstrun
-
 # Set up start up scripts
 RUN mkdir /etc/service/xeoma
 ADD xeoma.sh /etc/service/xeoma/run
