@@ -33,21 +33,28 @@ $ sudo docker run -d --name=xeoma --restart=always -p 8090:8090 -v /local/path/t
 
 See the notes below for special networking considerations depending on your cameras.
 
-#### Password
-The docker build process automatically creates a password on build, however it will also will generate a password the first time it runs.  It is then dumped to the log, so view it using:
+View logs using:
 ```
 docker logs xeoma
 ```
 
-### Usage
-To access your xeoma server, simply download the same version from http://felenasoft.com/xeoma/en/download/ and set it up to connect to a remote server using the password generated.  You can use it in a trial mode, however the free mode disables remote access, so pointless using with docker.  It's pretty great cheap software - give it a go!
-Ensure you are using a volume before you install the license, otherwise if you need to stop/recreate or upgrade later, you will lose your license file (meaning you will need to contact FelenaSoft to reset it).
+#### Configuration
+When run for the first time, a file named xeoma.conf will be created in the config dir, and the container will exit. Edit this file, setting the client password. Then rerun the command.
 
-### Upgrading
- As long as you have your /usr/local/Xeoma mapped to a volume, then you can safely stop, remove and start up new containers.  Config/license is carried across between containers being recreated.
+If you prefer to set environment variables for your docker container instead of using the configuration file, simply comment out the vars in the xeoma.conf. Note that the file needs to exist, or the container will recreate it.
+
+### Usage
+To access your xeoma server, simply download the same version from http://felenasoft.com/xeoma/en/download/ and set it up to connect to a remote server using the IP address of the docker host and the password you selected. You can use the client in a trial mode to connect to your server and try things out. Note the limitations of the trial version however -- settings aren't saved, and archived videos get deleted after 1 hour. Avoid the free version, as it cannot connect to your container. It's pretty great, affordable software - give it a go!
+
+### Licensing
+How licensing works is a bit unclear. As of version 16.12.26, the Lite version prohibits running inside virtual machines. Whether (and how!) this applies to docker containers is unclear. Your container may also need continuous internet access to validate the license.
+
+When you register your software, the license will be stored in your config directory. So it will be carried across container updates, along with any configuration changes you made in the app. But if you ever delete the config directory, you might have to contact Felena soft for another registration key.
+
+On the assumption that the licensing is tied to the MAC address of the host, the container will append some information about the MAC address to the file macs.txt each time it starts. If you have trouble getting the license to work after recreating the container, try using the `--mac-address` flag to the run command to force your new container to have the same MAC address as your old one. This will only work if you are using bridged networking.
 
 ### Notes
-Depending on how your security camera works, you might need to enable host networking by adding `--net=host` to your run command. If you are using IP cameras, you can run this in bridged networking mode, which is more secure.
+Depending on how your security camera works, you might need to enable host networking by adding `--net=host` to your run command. If you are using IP cameras, you can run this container in bridged networking mode, which is more secure.
 
 ### Support
 I don't work for FelenaSoft, I just own a license.  So if you find any bugs with the software that are related to the docker container, let me know and I'll investigate.  If you find bugs that are related to the actual software or cameras, etc then contact FelenaSoft.  This project is a personal pet project that FelenaSoft is aware of, but offer no support for it.  Don't hassle them if things don't work in relation to the container, etc.

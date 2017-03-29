@@ -25,7 +25,12 @@ RUN set -x && \
 	/root/xeoma.app -install -allmanual && \
 	rm /root/xeoma_linux64.tgz
 
+# Add default config file
+ADD xeoma.conf /root
+
 # Set up start up scripts
+ADD 50_configure_xeoma.sh /etc/my_init.d/
+
 RUN mkdir /etc/service/xeoma
 ADD xeoma.sh /etc/service/xeoma/run
 RUN chmod +x /etc/service/xeoma/run
