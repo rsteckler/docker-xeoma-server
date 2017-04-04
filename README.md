@@ -20,6 +20,7 @@ docker build --rm -t <your-docker-name>/xeoma xeoma-docker
 ```
 
 ### Running
+
 To run the container, fire up docker like so:
 
 ```
@@ -31,14 +32,14 @@ The "archive" is where videos and photos are stored. If you want to store your a
 $ sudo docker run -d --name=xeoma --restart=always -p 8090:8090 -v /local/path/to/config:/usr/local/Xeoma -v /local/path/to/archive:/usr/local/Xeoma/XeomaArchive jedimonkey/xeoma
 ```
 
-See the notes below for special networking considerations depending on your cameras.
+See the notes below for special networking considerations depending on your cameras, and for licensing issues.
 
 View logs using:
 ```
 docker logs xeoma
 ```
 
-#### Configuration
+### Configuration
 When run for the first time, a file named xeoma.conf will be created in the config dir, and the container will exit. Edit this file, setting the client password. Then rerun the command.
 
 If you prefer to set environment variables for your docker container instead of using the configuration file, simply comment out the vars in the xeoma.conf. Note that the file needs to exist, or the container will recreate it.
@@ -51,10 +52,14 @@ How licensing works is a bit unclear. As of version 16.12.26, the Lite version p
 
 When you register your software, the license will be stored in your config directory. So it will be carried across container updates, along with any configuration changes you made in the app. But if you ever delete the config directory, you might have to contact Felena soft for another registration key.
 
-On the assumption that the licensing is tied to the MAC address of the host, the container will append some information about the MAC address to the file macs.txt each time it starts. If you have trouble getting the license to work after recreating the container, try using the `--mac-address` flag to the run command to force your new container to have the same MAC address as your old one. This will only work if you are using bridged networking.
+Be careful about choosing your networking settings before installing your license. If you have registered the software with host or bridged networking, then if you change to the other type of networking, you will see an error message. You should still be able to switch back.
+
+However, if you have any issues, the container will append some information about the MAC address to the file macs.txt each time it starts. If you have trouble getting the license to work, try using the `--mac-address` flag to the run command to force your new container to have the same MAC address as your old one. This will only work if you are using bridged networking.
+
+Finally, if all else fails, use the felenasoft website for help. http://felenasoft.com/xeoma/en/support/activation-issues/
 
 ### Notes
-Depending on how your security camera works, you might need to enable host networking by adding `--net=host` to your run command. If you are using IP cameras, you can run this container in bridged networking mode, which is more secure.
+Depending on how your security camera works, you might need to enable host networking by adding `--net=host` to your run command. If you are using IP cameras, you can run this container in bridged networking mode, which is more secure. However, you will need to manually enter the URL for the camera, because the camera search feature probably won't work. You can consult this website for information about rtsp:// URLs for accessing the camera's low and high quality video streams: https://www.ispyconnect.com/sources.aspx.
 
 ### Support
 I don't work for FelenaSoft, I just own a license.  So if you find any bugs with the software that are related to the docker container, let me know and I'll investigate.  If you find bugs that are related to the actual software or cameras, etc then contact FelenaSoft.  This project is a personal pet project that FelenaSoft is aware of, but offer no support for it.  Don't hassle them if things don't work in relation to the container, etc.
