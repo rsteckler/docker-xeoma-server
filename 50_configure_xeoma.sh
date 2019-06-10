@@ -31,6 +31,11 @@ if [[ "$PASSWORD" == "YOUR_PASSWORD" ]]; then
   exit 1
 fi
 
+if [ -n "$MAC_ADDRESS" ]; then
+  echo "$(ts) Setting container mac address to $MAC_ADDRESS"
+  ip link set eth0 address $MAC_ADDRESS
+fi
+
 #-----------------------------------------------------------------------------------------------------------------------
 
 # Save some information about the interface that talks to the internet, in case we need it later.
