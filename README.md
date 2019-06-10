@@ -7,10 +7,10 @@ A docker container for running Xeoma server. Xeoma is video surveillance softwar
 ### EULA
 Make sure you read this - http://felenasoft.com/xeoma/en/eula/ as you are effectively agreeing to it by running this docker.
 
-### Getting the Docker
+### Getting the Docker image
 From Docker Index
 ```
-docker pull jedimonkey/xeoma
+docker pull rsteckler/xeoma
 ```
 
 Build yourself
@@ -24,12 +24,12 @@ docker build --rm -t <your-docker-name>/xeoma xeoma-docker
 To run the container, fire up docker like so:
 
 ```
-$ sudo docker run -d --name=xeoma --restart=always -p 8090:8090 -v /local/path/to/config:/usr/local/Xeoma jedimonkey/xeoma
+$ sudo docker run -d --name=xeoma --restart=always -p 8090:8090 -v /local/path/to/config:/usr/local/Xeoma rsteckler/xeoma
 ```
 
 The "archive" is where videos and photos are stored. If you want to store your archive somewhere other than inside your docker container, just add another volume:
 ```
-$ sudo docker run -d --name=xeoma --restart=always -p 8090:8090 -v /local/path/to/config:/usr/local/Xeoma -v /local/path/to/archive:/usr/local/Xeoma/XeomaArchive jedimonkey/xeoma
+$ sudo docker run -d --name=xeoma --restart=always -p 8090:8090 -v /local/path/to/config:/usr/local/Xeoma -v /local/path/to/archive:/usr/local/Xeoma/XeomaArchive rsteckler/xeoma
 ```
 
 See the notes below for special networking considerations depending on your cameras, and for licensing issues.
@@ -48,13 +48,12 @@ If you prefer to set environment variables for your docker container instead of 
 To access your xeoma server, simply download the same version from http://felenasoft.com/xeoma/en/download/ and set it up to connect to a remote server using the IP address of the docker host and the password you selected. You can use the client in a trial mode to connect to your server and try things out. Note the limitations of the trial version however -- settings aren't saved, and archived videos get deleted after 1 hour. Avoid the free version, as it cannot connect to your container. It's pretty great, affordable software - give it a go!
 
 ### Licensing
-How licensing works is a bit unclear. As of version 16.12.26, the Lite version prohibits running inside virtual machines. Whether (and how!) this applies to docker containers is unclear. Your container may also need continuous internet access to validate the license.
+
+Licensing requires a static MAC address.  We handle that by reading the MAC_ADDRESS variable that's set in the xeoma.conf and setting the container MAC to that value at startup.
 
 When you register your software, the license will be stored in your config directory. So it will be carried across container updates, along with any configuration changes you made in the app. But if you ever delete the config directory, you might have to contact Felena soft for another registration key.
 
 Be careful about choosing your networking settings before installing your license. If you have registered the software with host or bridged networking, then if you change to the other type of networking, you will see an error message. You should still be able to switch back.
-
-However, if you have any issues, the container will append some information about the MAC address to the file macs.txt each time it starts. If you have trouble getting the license to work, try using the `--mac-address` flag to the run command to force your new container to have the same MAC address as your old one. This will only work if you are using bridged networking.
 
 Finally, if all else fails, use the felenasoft website for help. http://felenasoft.com/xeoma/en/support/activation-issues/
 
