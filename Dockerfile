@@ -20,9 +20,9 @@ RUN set -x && \
 
 # Grab latest 64bit and install
 RUN set -x && \
-  curl -o /root/xeoma_linux64.tgz http://felenasoft.com/xeoma/downloads/xeoma_linux64.tgz && \
+  curl -o /root/xeoma_linux64.tgz https://felenasoft.com/xeoma/downloads/latest/linux/xeoma_linux64.tgz && \
 	tar -xvzf /root/xeoma_linux64.tgz -C /root && \
-	/root/xeoma.app -install -allmanual && \
+	/root/xeoma.app -install -hiddenmode && \
 	rm /root/xeoma_linux64.tgz
 
 # Add default config file
@@ -39,3 +39,4 @@ VOLUME /usr/local/Xeoma
 
 # Expose the port
 EXPOSE 8090
+EXPOSE 10090
